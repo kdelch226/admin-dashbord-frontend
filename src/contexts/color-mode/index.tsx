@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { RefineThemes } from "@refinedev/mui";
 import React, {
   PropsWithChildren,
@@ -41,6 +41,21 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
+const overriddenLightTheme = createTheme({
+  ...RefineThemes.Blue,
+  palette: {
+    ...RefineThemes.Blue.palette,
+    primary: {
+      main: "#14213d",
+    },
+    secondary: {
+      main: "#2f82f1",
+    },
+    background: {
+      default: "#e5e5e5", 
+    },
+  },
+});
   return (
     <ColorModeContext.Provider
       value={{
@@ -50,7 +65,7 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
     >
       <ThemeProvider
         // you can change the theme colors here. example: mode === "light" ? RefineThemes.Magenta : RefineThemes.MagentaDark
-        theme={mode === "light" ? RefineThemes.Blue : RefineThemes.BlueDark}
+        theme={mode === "light" ? overriddenLightTheme : RefineThemes.BlueDark}
       >
         {children}
       </ThemeProvider>

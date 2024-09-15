@@ -10,6 +10,8 @@ import { useGetIdentity } from "@refinedev/core";
 import { HamburgerMenu, RefineThemedLayoutV2HeaderProps } from "@refinedev/mui";
 import React, { useContext } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
+import { Box } from "@mui/material";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 type IUser = {
   id: number;
@@ -33,22 +35,17 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           justifyContent="flex-end"
           alignItems="center"
         >
-          <HamburgerMenu />
+          <Box sx={{ ml: { sm: 5, xl: 0 } }}>
+            <HamburgerMenu />
+          </Box>
           <Stack
             direction="row"
             width="100%"
             justifyContent="flex-end"
             alignItems="center"
           >
-            <IconButton
-              color="inherit"
-              onClick={() => {
-                setMode();
-              }}
-            >
-              {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
-            </IconButton>
 
+            <AdminPanelSettingsIcon sx={{mr:1}}/>
             {(user?.avatar || user?.name) && (
               <Stack
                 direction="row"
