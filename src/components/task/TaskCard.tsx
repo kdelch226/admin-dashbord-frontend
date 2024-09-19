@@ -1,78 +1,150 @@
-// import { Avatar, Box, Card, Stack, Typography } from '@mui/material';
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import { TaskSimpleCardProp } from '../../interfaces/task';
-// import { blue, pink, green, teal } from '@mui/material/colors';
-// import PinDropIcon from '@mui/icons-material/PinDrop';
-// import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-// import EmailIcon from '@mui/icons-material/Email';
-// import PersonIcon from '@mui/icons-material/Person';
-// import MaleIcon from '@mui/icons-material/Male';
-// import FemaleIcon from '@mui/icons-material/Female';
+import React, { MouseEvent, useState } from 'react';
+import { TaskSimpleCardProp } from '../../interfaces/task';
+import { Avatar, Box, IconButton, Card, CardHeader, MenuItem, Popper, ClickAwayListener, Paper, Menu, Typography, CardContent, Stack } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CustumButton from '../common/CustumButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useNavigate } from 'react-router-dom';
+import NotesIcon from '@mui/icons-material/Notes';
+import { green, red } from '@mui/material/colors';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useDelete } from '@refinedev/core';
 
-// const TaskCard = ({ id, name, gender, post, etat, dateEmbauche, phoneNumber, address, email, noOfProject, noOfEvent }: TaskSimpleCardProp) => {
-//   const avatarNameTab = name.split(' ');
-//   const avatarName = avatarNameTab[0].slice(0, 1) + avatarNameTab[1]?.slice(0, 1) || '';
-//   const avatarColor = gender === 'M' ? blue[500] : pink[500];
-//   const StatuBgColor = etat === 'Actif' ? teal[100] : '';
+const TaskCard = ({ id, title, dueDate, assignedEmployees, importance, status }: TaskSimpleCardProp) => {
+    const edit = () => {
+        // Logic for editing
+    };
+    const navigate = useNavigate();
+    const {mutate}=useDelete();
 
-//   return (
-//     <Card
-//       component={Link}
-//       to={`/Tasks/show/${id}`}
-//       sx={{
-//         display: 'flex',
-//         flexDirection: { xs: 'column', sm: 'row' },
-//         alignItems: 'center',
-//         maxWidth: { md: '800px', xs: '93vw' },
-//         my: 1,
-//         p: 1,
-//         '&:hover': {
-//           boxShadow: 10,
-//         },
-//         cursor: 'pointer',
-//         gap: 2,
-//         textDecoration: 'none',
-//       }}
-//     >
-//       <Avatar sx={{ bgcolor: avatarColor, width: 64, height: 64 }}>
-//         {avatarName}
-//       </Avatar>
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
 
-//       <Stack direction='row' flexWrap='wrap' justifyContent='space-between' width='100%' gap={2}>
-//         <Stack gap={0.6}>
-//           <Typography variant='subtitle2' sx={{ fontSize: 18 }}>{name}</Typography>
-//           <Stack direction='row' alignItems='center' gap={0.5}>
-//             {gender === 'M' ? <MaleIcon fontSize="small" /> : <FemaleIcon fontSize="small" />}
-//             <Typography variant='body2'>{gender}</Typography>
-//           </Stack>
-//           <Typography variant='body1' sx={{ textDecoration: 'underline', fontWeight: 500 }}>{post}</Typography>
-//           <Typography variant='body2' bgcolor={StatuBgColor} color="textSecondary" sx={{ fontStyle: 'italic' }}>Statut : {etat}</Typography>
-//           <Typography variant='body2' sx={{ color: blue[500], fontWeight: 'bold' }}>Embauché le : {new Date(dateEmbauche).toLocaleDateString()}</Typography>
-//         </Stack>
+    // Ouvrir le menu
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
 
-//         <Stack gap={0.6}>
-//           <Stack direction='row' alignItems='center' gap={0.9}>
-//             <EmailIcon fontSize="small" />
-//             <Typography variant='body1'>{email}</Typography>
-//           </Stack>
-//           <Stack direction='row' alignItems='center' gap={0.9}>
-//             <LocalPhoneIcon fontSize="small" />
-//             <Typography variant='body1'>{phoneNumber}</Typography>
-//           </Stack>
-//           <Stack direction='row' alignItems='center' gap={0.9}>
-//             <PinDropIcon fontSize="small" />
-//             <Typography variant='body1'>{address}</Typography>
-//           </Stack>
-//         </Stack>
-//       </Stack>
+    // Fermer le menu
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-//       <Stack justifyContent='start' direction='row' ml={2} gap={2}>
-//         <Typography paragraph variant='body1'>projects: {noOfProject}</Typography>
-//         <Typography paragraph variant='body1'>events: {noOfEvent}</Typography>
-//       </Stack>
-//     </Card>
-//   )
-// }
+    // Gérer les options sélectionnées
+    const handleMenuItemClick = (option: string) => {
+        console.log(`You clicked ${option}`);
+        handleClose();
+    };
 
-// export default TaskCard;
+    const handleDelete =()=>{
+        const text = `do you want to delete task '${title}' ??`;
+        const response = confirm(text);
+        if(text){
+            mutate({
+                id:id,
+                resource:'tasks'
+            })
+        }
+        else return;
+    }
+
+    let deadlineColor;
+    const deadline = dueDate ? new Date(dueDate).toDateString() : "Pas de date limite"
+    if (dueDate) {
+        const todayDate = new Date();
+        const deadline = new Date(dueDate);
+        const diffDay = (deadline.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24);
+        deadlineColor = diffDay >= 5 ? green[500] : red[500];
+    }
+
+    return (
+        <Card sx={{ width: '300px' }} onClick={() => edit()}>
+            <CardHeader
+                title={<Box
+                    sx={{
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxWidth: '80%',
+                        padding: 0
+                    }}
+                >
+                    <Typography fontSize={17} fontWeight={600}>{title}</Typography>
+                </Box>}
+                action={
+                    <Box>
+                        <IconButton
+                            onClick={handleClick}
+                            aria-label="settings"
+                            onPointerDown={(e) => e.stopPropagation()}
+
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            id="dropdown-menu"
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose} // Fermer le menu si vous cliquez en dehors
+                            MenuListProps={{
+                                'aria-labelledby': 'dropdown-button',
+                            }}
+                            onPointerDown={(e) => e.stopPropagation()}
+                        >
+                            <MenuItem>
+                                <CustumButton
+                                    variant='outlined'
+                                    title="Task Details"
+                                    backgroundColor="#475BE8"
+                                    color="#FCFCFC"
+                                    fullWidth
+                                    icon={<VisibilityIcon />}
+                                    handleClick={() => {
+                                        navigate(
+                                            `edit/${id}`,
+                                        );
+                                    }}
+                                />
+                            </MenuItem>
+                            <MenuItem>
+                                <CustumButton
+                                    title="Delete"
+                                    backgroundColor="#d42e2e"
+                                    color="#FCFCFC"
+                                    fullWidth
+                                    icon={<DeleteIcon />}
+                                    handleClick={handleDelete}
+                                />
+                            </MenuItem>
+                        </Menu>
+                    </Box>
+                }
+            />
+            <CardContent sx={{
+                py: 0
+            }}>
+                <Stack gap={1} direction='row' justifyContent='space-between'>
+                    <NotesIcon />
+
+                    <Stack sx={{
+                        color: deadlineColor,
+                        border: 1,
+                        borderColor: { deadlineColor },
+                        p: 0.4,
+                    }} direction='row'>
+                        <AccessTimeIcon />
+                        <Typography>{deadline}</Typography>
+                    </Stack>
+                    <Typography sx={{ border: 1, px: 0.4, color: 'black' }}>
+                        {importance}
+                    </Typography>
+                </Stack>
+
+            </CardContent>
+        </Card>
+    );
+};
+
+export default TaskCard;

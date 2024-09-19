@@ -23,8 +23,8 @@ const ClientCard = ({ id, name, dateCreation, company, gender, industry, phoneNu
                 display: 'flex',
                 flexDirection: { xs: 'column', sm: 'row' },
                 alignItems: 'center',
-                maxWidth: { md: '850px', xs: '93vw' },
-                my:1,
+                width: {xs:"100%",md:'80%'},
+                my: 1,
                 p: 1,
                 '&:hover': {
                     boxShadow: 10,
@@ -38,15 +38,15 @@ const ClientCard = ({ id, name, dateCreation, company, gender, industry, phoneNu
                 {avatarName}
             </Avatar>
 
-            <Stack direction='row'  width='100%' gap={4}>
-                <Stack gap={0.6}>
-                    <Typography paragraph variant='subtitle2' sx={{ fontSize: 18 }}>{name} / {gender}</Typography>
+            <Stack direction='row'  gap={3}>
+                <Stack>
+                    <Typography paragraph variant='subtitle2' sx={{ fontSize: 18, p: 0, m: 0 }}>{name} / {gender}</Typography>
                     <Typography paragraph variant='body2' sx={{ textDecoration: 'underline', fontSize: 15, mb: 1 }}>{company}</Typography>
                     <Stack direction='row' alignItems='start' gap={0.5}>
                         <ApartmentIcon fontSize='small' />
                         <Typography paragraph variant='body1' sx={{ fontWeight: 500 }}>sector : {industry}</Typography>
                     </Stack>
-                    <Typography paragraph variant='body2' sx={{ color: blue[500], fontWeight: 'bold' }}>date de creation  : {new Date(dateCreation).toLocaleDateString()}</Typography>
+                    <Typography paragraph variant='body2' sx={{ color: blue[500], fontWeight: 'bold', p: 0, m: 0 }}>date de creation  : {new Date(dateCreation).toLocaleDateString()}</Typography>
                 </Stack>
 
                 <Stack gap={0.6}>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { AgentFormProps } from "../../interfaces/agent";
 
-const EmployeeForm = ({ type, register, handleSubmit, formLoading, onFinishHandler }: AgentFormProps) => {
+const AgentForm = ({ type, register, handleSubmit, formLoading, onFinishHandler }: AgentFormProps) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -143,4 +143,4 @@ const EmployeeForm = ({ type, register, handleSubmit, formLoading, onFinishHandl
     );
 }
 
-export default EmployeeForm;
+export default AgentForm;

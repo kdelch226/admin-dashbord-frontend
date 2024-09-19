@@ -24,7 +24,7 @@ const AgentCard = ({ id, name, gender, post, etat, dateEmbauche, phoneNumber, ad
         display: 'flex',
         flexDirection: { xs: 'column', sm: 'row' },
         alignItems: 'center',
-        maxWidth: { md: '800px', xs: '93vw' },
+        width: {xs:"100%",md:'80%'},
         my: 1,
         p: 1,
         '&:hover': {
@@ -39,7 +39,7 @@ const AgentCard = ({ id, name, gender, post, etat, dateEmbauche, phoneNumber, ad
         {avatarName}
       </Avatar>
 
-      <Stack direction='row' flexWrap='wrap' justifyContent='space-between' width='100%' gap={2}>
+      <Stack direction='row'   gap={2}>
         <Stack gap={0.6}>
           <Typography variant='subtitle2' sx={{ fontSize: 18 }}>{name}</Typography>
           <Stack direction='row' alignItems='center' gap={0.5}>

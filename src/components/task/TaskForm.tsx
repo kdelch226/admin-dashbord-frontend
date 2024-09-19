@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Box, Typography, TextField, FormHelperText, FormControl, TextareaAutosize, Stack, Select, MenuItem, Button, InputLabel } from '@mui/material';
-import CustumButton from "../common/CustumButton";
+import React from 'react';
+import { Box, Typography, TextField, Button, InputLabel, Select, FormControl, MenuItem } from '@mui/material';
+import { TaskFormProps } from '../../interfaces/task';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { AgentFormProps } from "../../interfaces/agent";
+import CustumButton from '../common/CustumButton';
 
-const TaskForm = ({ type, register, handleSubmit, formLoading, onFinishHandler }: AgentFormProps) => {
+const TaskForm: React.FC<TaskFormProps> = ({ setProjetId, projet, type, errors, formLoading, register, handleSubmit, onFinishHandler }) => {
+
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -15,132 +17,126 @@ const TaskForm = ({ type, register, handleSubmit, formLoading, onFinishHandler }
         navigate(previouspath);
     };
 
+    const importanceOptions = ['Critical', 'High', 'Medium', 'Low', 'Very'];
+    const STATUS_OPTIONS = ['unassigned', 'todo', 'in-progress', 'pending', 'completed', 'cancelled'];
+
+    if (projet?.projetId) {
+        setProjetId(projet.projetId)
+    }
 
     return (
         <Box>
-            <Typography fontWeight={600} fontSize={22} mb={2}>
-                {type} an Task
+            <Typography variant="h6" gutterBottom>
+                {type} Task
             </Typography>
 
-            <Box borderRadius={1} p={2} bgcolor='#f5f3f4'>
-                <form onSubmit={handleSubmit(onFinishHandler)} style={{ marginTop: '20px', width: '100%', gap: '15px', display: 'flex', flexDirection: 'column' }}>
-                    <FormControl>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Name</FormHelperText>
-                        <TextField
-                            placeholder='Full Name *'
-                            fullWidth
-                            required
-                            id='name'
-                            color='info'
-                            variant='outlined'
-                            {...register('name', { required: true })}
-                        />
-                    </FormControl>
+            {projet && (
+                <Typography variant="h6" gutterBottom>
+                    Poject :{projet.projetName}
+                </Typography>
+            )}
 
-                    <FormControl>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Genre</FormHelperText>
+            <form onSubmit={handleSubmit(onFinishHandler)} style={{ width: '100%' }}>
+                <Box marginBottom={2}>
+                    <Typography variant="body1" gutterBottom>Title</Typography>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        placeholder="Title"
+                        {...register('title', { required: 'Title is required' })}
+                        error={!!errors.title}
+                        helperText={errors.title ? (errors.title.message as string) : ''}
+                    />
+                </Box>
+
+                <Box marginBottom={2}>
+                    <Typography variant="body1" gutterBottom>Description</Typography>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        placeholder="Description"
+                        multiline
+                        minRows={4}
+                        {...register('description', { required: 'Description is required' })}
+                        error={!!errors.description}
+                        helperText={errors.description ? (errors.description.message as string) : ''}
+                    />
+                </Box>
+
+                <Box marginBottom={2}>
+                    <Typography variant="body1" gutterBottom>Due Date</Typography>
+                    <TextField
+                        type="date"
+                        fullWidth
+                        variant="outlined"
+                        InputLabelProps={{ shrink: true }}
+                        {...register('dueDate', { required: 'dueDate is required' })}
+                        error={!!errors.estimatedEndDate}
+                        helperText={errors.estimatedEndDate ? (errors.estimatedEndDate.message as string) : ''}
+                    />
+                </Box>
+
+                <Box marginBottom={2}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel id="importance-label">Importance</InputLabel>
                         <Select
-                            defaultValue=''
-                            id="position"
-                            {...register('gender', { required: true })}
+                            labelId="importance-label"
+                            id="importance"
+                            {...register('importance', { required: 'Importance is required' })}
+                            error={!!errors.importance}
+                            label="Importance"
                         >
-                            <MenuItem value='M'>M</MenuItem>
-                            <MenuItem value='F'>F</MenuItem>
+                            {importanceOptions.map(option => (
+                                <MenuItem key={option} value={option}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        {errors.importance && (
+                            <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
+                                {errors.importance.message}
+                            </Typography>
+                        )}
+                    </FormControl>
+                </Box>
+
+                <Box mb={2}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel id="status-label">Status</InputLabel>
+                        <Select
+                            labelId="status-label"
+                            label="status"
+                            defaultValue="unassigned"
+                            {...register('status')}
+                        >
+                            {STATUS_OPTIONS.map(status => (
+                                <MenuItem key={status} value={status}>
+                                    {status}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
+                </Box>
+                
 
-                    <FormControl>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Email</FormHelperText>
-                        <TextField
-                            placeholder='Email *'
-                            fullWidth
-                            required
-                            id='email'
-                            type='email'
-                            color='info'
-                            variant='outlined'
-                            {...register('email', { required: true })}
-                        />
-                    </FormControl>
-
-                    <FormControl>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Phone Number</FormHelperText>
-                        <TextField
-                            placeholder='Phone Number *'
-                            fullWidth
-                            required
-                            id='phone'
-                            color='info'
-                            variant='outlined'
-                            {...register('phoneNumber', { required: true })}
-                        />
-                    </FormControl>
-
-                    <FormControl>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Position</FormHelperText>
-                        <Select
-                            defaultValue='Software Engineer'
-                            id="position"
-                            {...register('post', { required: true })}
-                        >
-                            <MenuItem value='Software Engineer'>Software Engineer</MenuItem>
-                            <MenuItem value='Product Manager'>Product Manager</MenuItem>
-                            <MenuItem value='Designer'>Designer</MenuItem>
-                            <MenuItem value='Data Analyst'>Data Analyst</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <FormControl>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Address</FormHelperText>
-                        <TextField
-                            placeholder='Address *'
-                            fullWidth
-                            required
-                            id='address'
-                            color='info'
-                            variant='outlined'
-                            {...register('address', { required: true })}
-                        />
-                    </FormControl>
-
-                    {type === 'Edit' && (
-                        <FormControl>
-                            <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Status</FormHelperText>
-                            <Select
-                                defaultValue='Actif'
-                                id="etat"
-                                {...register('etat', { required: true })}
-                            >
-                                <MenuItem value='Actif'>Actif</MenuItem>
-                                <MenuItem value='En congé'>En congé</MenuItem>
-                                <MenuItem value='Suspendu'>Suspendu</MenuItem>
-                                <MenuItem value='En probation'>En probation</MenuItem>
-                                <MenuItem value='Terminé'>Terminé</MenuItem>
-                                <MenuItem value='En formation'>En formation</MenuItem>
-                                <MenuItem value='Retraité'>Retraité</MenuItem>
-                            </Select>
-                        </FormControl>
-                    )}
-
-                    <Stack direction='row' gap={2}>
-                        <CustumButton
-                            type='submit'
-                            title={formLoading ? 'Submitting...' : 'Submit'}
-                            backgroundColor='#ebdec2'
-                            color='#000'
-                        />
-                        <CustumButton
-                            type='button'
-                            title='Cancel'
-                            backgroundColor='#d00000'
-                            color='#000'
-                            handleClick={handleClickCancel}
-                        />
-                    </Stack>
-                </form>
-            </Box>
+                <Box mt={2} sx={{ display: 'flex', gap: 2 }}>
+                    <CustumButton
+                        type='submit'
+                        title={formLoading ? 'Submitting...' : 'Submit'}
+                        backgroundColor='#ebdec2'
+                        color='#000'
+                    />
+                    <CustumButton
+                        type='button'
+                        title='Cancel'
+                        backgroundColor='#d00000'
+                        color='#000'
+                        handleClick={handleClickCancel}
+                    />
+                </Box>
+            </form>
         </Box>
     );
-}
+};
 
 export default TaskForm;

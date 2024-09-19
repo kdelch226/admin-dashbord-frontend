@@ -81,6 +81,8 @@ import MyProfil from "./pages/profil/MyProfil";
 import AdminaDetail from "./pages/admina/adminaDetail";
 import EditProfil from "./pages/profil/EditProfil";
 import AllTasks from "./pages/task/AllTasks";
+import CreateTask from "./pages/task/CreateTask";
+import EditTask from "./pages/task/Edit-Task";
 
 const axiosInstance = axios.create();
 
@@ -122,7 +124,7 @@ function App() {
       if (profileObj) {
         const response = await fetch('http://localhost:3000/baobabapi/v1/connexion/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json','X-Email-Creator':profileObj.email },
+          headers: { 'Content-Type': 'application/json', 'X-Email-Creator': profileObj.email },
           body: JSON.stringify({
             name: profileObj.name,
             email: profileObj.email,
@@ -287,7 +289,6 @@ function App() {
                   list: "/tasks",
                   create: "/tasks/create",
                   edit: "/tasks/edit/:id",
-                  show: "/tasks/show/:id",
                   meta: {
                     icon: <AssignmentIcon />,
                     label: "Tasks"
@@ -380,6 +381,8 @@ function App() {
                   </Route>
                   <Route path="/tasks">
                     <Route index element={<AllTasks />} />
+                    <Route path="create" element={<CreateTask />} />
+                    <Route path="edit/:id" element={<EditTask />} />
                   </Route>
                   <Route path="/users">
                     <Route index element={<Admina />} />

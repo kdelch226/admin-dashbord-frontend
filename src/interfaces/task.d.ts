@@ -1,17 +1,67 @@
+import { UseDroppableArguments } from "@dnd-kit/core";
+
 export interface TaskDetailProps {
+    id?: BaseKey | undefined,
     title: string; // Titre de la tâche
     description?: string; // Description de la tâche (optionnel)
-    status: 'pending' | 'in-progress' | 'completed' | 'cancelled'; // Statut de la tâche
+    status: 'unassigned' | 'todo' | 'pending' | 'in-progress' | 'completed' | 'cancelled'; // Statut de la tâche
     dueDate?: Date; // Date limite (optionnel)
-    assignedEmployee: string[];
-    relatedProject?: string;
-    importance:'Critical', 'High', 'Medium', 'Low', 'Very'
+    assignedEmployees?: Array | undefined;
+    relatedProject?: Array | undefined;
+    importance: 'Critical', 'High', 'Medium', 'Low', 'Very'
+}
+
+export interface KabanColumnProps {
+    id: string;
+    title: string; // Titre de la tâche
+    onAddClick?: (args: { id: string }) => void;
+    data?: UseDroppableArguments['data'];
+    count: number;
+    description: string
 }
 
 export interface TaskSimpleCardProp {
+    id: string;
     title: string; // Titre de la tâche
-    status: 'pending' | 'in-progress' | 'completed' | 'cancelled'; // Statut de la tâche
-    dueDate?: Date; // Date limite (optionnel)
-    assignedEmployee?: string[];
-    importance:'Critical', 'High', 'Medium', 'Low', 'Very'
+    dueDate?: string; // Date limite (optionnel)
+    assignedEmployees?: {
+        id?: BaseKey | undefined,
+        name: string,
+        gender: string,
+    }[];
+    importance: 'Critical' | 'High' | 'Medium' | 'Low' | 'Very';
+    status: 'unassigned' | 'todo' | 'pending' | 'in-progress' | 'completed' | 'cancelled'; // Statut de la tâche
+}
+
+export interface TasksProp {
+    _id: BaseKey | undefined,
+    title: string; // Titre de la tâche
+    dueDate?: string; // Date limite (optionnel)
+    assignedEmployees?: {
+        id?: BaseKey | undefined,
+        name: string,
+        gender: string,
+    }[];
+    importance: 'Critical' | 'High' | 'Medium' | 'Low' | 'Very';
+    status: 'unassigned' | 'todo' | 'pending' | 'in-progress' | 'completed' | 'cancelled'; // Statut de la tâche
+}
+
+
+export interface TaskGroup {
+    [key: string]: TasksProp[];
+}
+
+export interface TaskFormProps {
+    projet?: {
+        projetId: string
+        projetName
+    }
+    setProjetId:(string)=>void;
+    type: string,
+    errors: FieldErrors<FieldValues>;
+    formLoading: boolean;
+    register: any,
+    onFinish: (values: FieldValues) => Promise<void | CreateResponse<BaseRecord> | UpdateResponse<BaseRecord>>,
+    handleSubmit: FormEventHandler<HTMLFormElement> | undefined,
+    onFinishHandler: (data: FieldValues) => Promise<void> | void,
 }
