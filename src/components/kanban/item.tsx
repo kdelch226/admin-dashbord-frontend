@@ -13,7 +13,7 @@ const KanbanItem = ({ children, id, data }: React.PropsWithChildren<Props>) => {
         data
     });
     return (
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'relative',my:1 }}>
             <Box
                 ref={setNodeRef}
                 {...attributes}

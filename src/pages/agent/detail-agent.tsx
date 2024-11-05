@@ -20,7 +20,7 @@ const DetailAgent = () => {
           name={agentdata.name}
           email={agentdata.email}
           post={agentdata.post}
-          projet={[]}
+          project={[]}
           task={[]}
           event={[]}
           gender={agentdata.gender}

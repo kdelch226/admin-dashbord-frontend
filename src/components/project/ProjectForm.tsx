@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { AgentFormProps } from "../../interfaces/agent";
 
-const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler }: AgentFormProps) => {
+const ProjectForm = ({ type, register, handleSubmit, formLoading, onFinishHandler }: AgentFormProps) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -33,7 +33,7 @@ const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler
                             id='title'
                             color='info'
                             variant='outlined'
-                            {...register('title', { required: true })}
+                            {...register('title', { required:true })}
                         />
                     </FormControl>
 
@@ -51,7 +51,7 @@ const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler
                             }}
                             minRows={5}
                             id='name'
-                            {...register('description', { required: true })}
+                            {...register('description', { required:true })}
                         />
                     </FormControl>
 
@@ -59,19 +59,15 @@ const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler
                         <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>
                             Start Date
                         </FormHelperText>
-                        <input
-                            type="date"
-                            {...register('startDate', { required: true })}
-                            style={{
-                                backgroundColor: 'transparent',
-                                border: '1px solid rgba(0,0,0,0.23)',
-                                borderRadius: 5,
-                                padding: '10px',
-                                fontSize: '16px',
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                margin: '8px 0'
-                            }}
+                        <TextField
+                            type='date'
+                            fullWidth
+                            required={(type=='create'||type=='Create') ? true:false}
+                            id='startDate'
+                            color='info'
+                            variant='outlined'
+                            {...register('startDate', { required: (type=='create'||type=='Create') ? true:false })}
+                           
                         />
                     </FormControl>
 
@@ -79,19 +75,15 @@ const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler
                         <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>
                         Estimated End Date
                         </FormHelperText>
-                        <input
-                            type="date"
-                            {...register('estimatedEndDate', { required: true })}
-                            style={{
-                                backgroundColor: 'transparent',
-                                border: '1px solid rgba(0,0,0,0.23)',
-                                borderRadius: 5,
-                                padding: '10px',
-                                fontSize: '16px',
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                margin: '8px 0'
-                            }}
+                        <TextField
+                            type='date'
+                            fullWidth
+                            required={(type=='create'||type=='Create') ? true:false}
+                            id='estimatedEndDate'
+                            color='info'
+                            variant='outlined'
+                            {...register('estimatedEndDate', { required: (type=='create'||type=='Create') ? true:false })}
+                            
                         />
                     </FormControl>
 
@@ -100,11 +92,11 @@ const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler
                         <TextField
                             placeholder='initialBudget entry number only  *'
                             fullWidth
-                            required
+                            required={(type=='create'||type=='Create') ? true:false}
                             id='phone'
                             color='info'
                             variant='outlined'
-                            {...register('initialBudget', { required: true })}
+                            {...register('initialBudget', { required: (type=='create'||type=='Create') ? true:false })}
                         />
                     </FormControl>
 
@@ -132,4 +124,4 @@ const ProjetForm = ({ type, register, handleSubmit, formLoading, onFinishHandler
     );
 }
 
-export default ProjetForm;
+export default ProjectForm;

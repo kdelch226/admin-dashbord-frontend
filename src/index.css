@@ -1,6 +1,15 @@
-* {
-  font-family: 'Roboto', sans-serif !important;
-}
+@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-calendars/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-dropdowns/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-lists/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-react-schedule/styles/material.css";
+
+
 
 a {
   text-decoration: none !important;
@@ -9,6 +18,23 @@ a {
 .apexcharts-tooltip {
   background: #f3f3f3;
   color: black;
+}
+
+.e-quick-popup-wrapper {
+    top: 50% !important; /* Centrer verticalement */
+    left: 50% !important; /* Centrer horizontalement */
+    transform: translate(-50%, -50%) !important; /* Ajustement final */
+    z-index: 1000; /* Assurez-vous qu'il soit au-dessus des autres éléments */
+}
+
+@media (min-width: 900px) and (max-width: 1000px) {
+  .themed-sider {
+      width: 200px; /* Largeur de la barre latérale pour les écrans entre 900 et 1000px */
+  }
+  
+  .main-content {
+      padding-left: 50px; /* Ajustement du remplissage pour les écrans entre 900 et 1000px */
+  }
 }
 
 /* .my_profile-bg {

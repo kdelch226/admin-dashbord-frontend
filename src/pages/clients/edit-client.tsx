@@ -20,7 +20,7 @@ const EditClient = () => {
 };
   return (
     <ClientForm
-    type="Create"
+    type="Edit"
     register={register}
     onFinish={onFinish}
     formLoading={isSubmitting}

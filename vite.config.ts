@@ -9,5 +9,12 @@ export default defineConfig(({ mode }) => {
       'process.env': env
     },
     plugins: [react()],
+    css: {
+      preprocessorOptions: {
+        css: {
+          additionalData: `@import "path/to/your/material.css";`
+        }
+      }
+    }
   }
 })

@@ -4,21 +4,20 @@ import { CustumButton } from '..';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTable, useUpdate } from '@refinedev/core';
 import { Stack } from '@mui/material';
-import MiniClientCard from '../client/miniClientCard';
+import MiniProjectCard from '../project/MiniProjectCard';
 
 interface closeModal {
-    handleCloseAddClient: () => void,
-    projetId: string,
-    userEmail:string
+    handleCloseAddProject: () => void,
+    taskId: string,
 }
 
-const AddClientProjet = ({ handleCloseAddClient, projetId,userEmail}: closeModal) => {
+const AddProjectTask = ({ handleCloseAddProject, taskId }: closeModal) => {
     const {
         tableQueryResult: { data, isLoading, isError },
         filters,
         setFilters,
     } = useTable({
-        resource: 'clients'
+        resource: 'projects'
     });
 
     const { mutate } = useUpdate()
@@ -29,27 +28,32 @@ const AddClientProjet = ({ handleCloseAddClient, projetId,userEmail}: closeModal
         ));
 
         return {
-            name: logicalFilters.find((item) => item.field === "name")?.value || "",
-            company: logicalFilters.find((item) => item.field === "company")?.value || "",
+            name: logicalFilters.find((item) => item.field === "name")?.value,
+            post: logicalFilters.find((item) => item.field === "post")?.value,
+
         }
     }, [filters]);
 
-    const searchedClients = data?.data ?? [];
+    const serchedProject = data?.data ?? [];
 
-    const handleAddClient = ({ client }: any) => {
-        const text = `do you want to add ${client?.name}`;
+    const handleAddProject = ({ project }: any) => {
+        const text = `do you want to add ${project?.title}`;
         const response = confirm(text);
         if (response) {
             mutate({
-                resource:'projets',
-                id: projetId,
+                resource: 'tasks',
+                id: taskId,
                 values: {
-                    clientId: client._id,
-                    email:userEmail
+                    projectId: project._id,
+                }
+            }, {
+                onSuccess: () => {
+                    window.location.reload();
                 }
             })
         }
     }
+
 
     if (isLoading) return <Typography>Loading ...</Typography>;
     if (isError) return <Typography>Error ...</Typography>;
@@ -72,9 +76,9 @@ const AddClientProjet = ({ handleCloseAddClient, projetId,userEmail}: closeModal
             >
                 <Stack gap={2} direction={{ xs: 'column', sm: 'row' }}>
                     <Box>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Client Name</FormHelperText>
+                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Name</FormHelperText>
                         <TextField
-                            placeholder='Client *'
+                            placeholder='Task *'
                             fullWidth
                             required
                             id='name'
@@ -91,17 +95,17 @@ const AddClientProjet = ({ handleCloseAddClient, projetId,userEmail}: closeModal
                         />
                     </Box>
                     <Box>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Company Name</FormHelperText>
+                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>post</FormHelperText>
                         <TextField
                             fullWidth
                             variant='outlined'
                             color='info'
-                            placeholder='company'
+                            placeholder='post'
                             required
-                            value={currentFilterValues.company}
+                            value={currentFilterValues.post}
                             onChange={(e) => setFilters([
                                 {
-                                    field: 'company',
+                                    field: 'post',
                                     operator: 'contains',
                                     value: e.currentTarget.value ? e.currentTarget.value : undefined
                                 }
@@ -110,20 +114,18 @@ const AddClientProjet = ({ handleCloseAddClient, projetId,userEmail}: closeModal
                     </Box>
                 </Stack>
 
-                {searchedClients?.map((client) => (
-                    <MiniClientCard
-                        id={client._id}
-                        name={client.name}
-                        company={client.company}
-                        gender={client.gender}
-                        handleClick={()=>handleAddClient({client})}
+                {serchedProject?.map((project) => (
+                    <MiniProjectCard
+                        id={project._id}
+                        title={project.title}
+                        handleClick={() => handleAddProject({ project })}
                     />
                 ))}
 
             </Box>
             <CustumButton
                 title='Cancel'
-                handleClick={handleCloseAddClient}
+                handleClick={handleCloseAddProject}
                 icon={<CloseIcon />}
                 backgroundColor='#ebdec2'
                 color='#000'
@@ -132,4 +134,4 @@ const AddClientProjet = ({ handleCloseAddClient, projetId,userEmail}: closeModal
     )
 }
 
-export default AddClientProjet
+export default AddProjectTask

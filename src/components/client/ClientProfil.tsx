@@ -15,7 +15,7 @@ import { ClientProfileProps } from "../../interfaces/client";
 import ApartmentIcon from '@mui/icons-material/Apartment';
 
 
-const ClientProfil = ({ id, name, email, industry, projet, gender, company, event, number, adress }: ClientProfileProps) => {
+const ClientProfil = ({ id, name, email, industry, project, gender, company, event, number, adress }: ClientProfileProps) => {
 
     const navigate = useNavigate();
     const avatarNameTab = name.split(' ');

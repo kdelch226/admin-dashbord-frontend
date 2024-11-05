@@ -2,7 +2,7 @@ import React, { MouseEvent, useState } from 'react';
 import { TaskSimpleCardProp } from '../../interfaces/task';
 import { Avatar, Box, IconButton, Card, CardHeader, MenuItem, Popper, ClickAwayListener, Paper, Menu, Typography, CardContent, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete, Edit } from '@mui/icons-material';
 import CustumButton from '../common/CustumButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const TaskCard = ({ id, title, dueDate, assignedEmployees, importance, status }:
         // Logic for editing
     };
     const navigate = useNavigate();
-    const {mutate}=useDelete();
+    const { mutate } = useDelete();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -34,17 +34,16 @@ const TaskCard = ({ id, title, dueDate, assignedEmployees, importance, status }:
 
     // Gérer les options sélectionnées
     const handleMenuItemClick = (option: string) => {
-        console.log(`You clicked ${option}`);
         handleClose();
     };
 
-    const handleDelete =()=>{
+    const handleDelete = () => {
         const text = `do you want to delete task '${title}' ??`;
         const response = confirm(text);
-        if(text){
+        if (text) {
             mutate({
-                id:id,
-                resource:'tasks'
+                id: id,
+                resource: 'tasks'
             })
         }
         else return;
@@ -95,6 +94,20 @@ const TaskCard = ({ id, title, dueDate, assignedEmployees, importance, status }:
                         >
                             <MenuItem>
                                 <CustumButton
+                                    title={"Edit"}
+                                    backgroundColor="#475BE8"
+                                    color="#FCFCFC"
+                                    fullWidth
+                                    icon={<Edit />}
+                                    handleClick={() => {
+                                        navigate(
+                                            `/tasks/edit/${id}`,
+                                        );
+                                    }}
+                                />
+                            </MenuItem>
+                            <MenuItem>
+                                <CustumButton
                                     variant='outlined'
                                     title="Task Details"
                                     backgroundColor="#475BE8"
@@ -103,7 +116,7 @@ const TaskCard = ({ id, title, dueDate, assignedEmployees, importance, status }:
                                     icon={<VisibilityIcon />}
                                     handleClick={() => {
                                         navigate(
-                                            `edit/${id}`,
+                                            `show/${id}`,
                                         );
                                     }}
                                 />
@@ -114,7 +127,7 @@ const TaskCard = ({ id, title, dueDate, assignedEmployees, importance, status }:
                                     backgroundColor="#d42e2e"
                                     color="#FCFCFC"
                                     fullWidth
-                                    icon={<DeleteIcon />}
+                                    icon={<Delete />}
                                     handleClick={handleDelete}
                                 />
                             </MenuItem>

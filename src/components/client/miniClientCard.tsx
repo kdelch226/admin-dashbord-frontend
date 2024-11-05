@@ -10,7 +10,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import { MiniClientSimpleCardProp } from '../../interfaces/client';
 
-const MiniClientCard = ({ id, name, company, gender,handleClick }: MiniClientSimpleCardProp) => {
+const MiniClientCard = ({ id, name, company, gender,handleClick,handleDelete }: MiniClientSimpleCardProp) => {
     const avatarNameTab = name.split(' ');
     const avatarName = avatarNameTab[0].slice(0, 1) + avatarNameTab[1]?.slice(0, 1) || '';
     const avatarColor = gender === 'M' ? blue[500] : pink[500];

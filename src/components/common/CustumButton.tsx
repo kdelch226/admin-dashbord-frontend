@@ -12,7 +12,7 @@ const CustumButton = ({ type, title, handleClick, backgroundColor, color, icon, 
         flex: fullWidth ? 1 : 'unset',
         p: '10px 15px',
         width: fullWidth ? '100%' : 'fit-content',
-        height:{xs:30,md:45},
+        height:30,
         fontSize: 16,
         gap: 1,
         '&:hover': {

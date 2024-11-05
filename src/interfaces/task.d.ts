@@ -52,14 +52,10 @@ export interface TaskGroup {
 }
 
 export interface TaskFormProps {
-    projet?: {
-        projetId: string
-        projetName
-    }
-    setProjetId:(string)=>void;
-    type: string,
-    errors: FieldErrors<FieldValues>;
-    formLoading: boolean;
+    errors:FieldErrors<FieldValues>;
+    isSubmitting: boolean;
+    open: boolean;
+    onClose: () => void;
     register: any,
     onFinish: (values: FieldValues) => Promise<void | CreateResponse<BaseRecord> | UpdateResponse<BaseRecord>>,
     handleSubmit: FormEventHandler<HTMLFormElement> | undefined,

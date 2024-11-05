@@ -4,5 +4,6 @@ export interface PieChartProps {
     series: Array<number>,
     colors: Array<string>,
     bgcolor: string,
-    textcolor:string
+    textcolor:string,
+    labels?:string[]
 }

@@ -31,6 +31,10 @@ const KanbanColumn = ({
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
+                px:2,
+                borderRight:1,
+                height:'90VH',
+                minWidth:200
             }}
         >
 
@@ -43,9 +47,6 @@ const KanbanColumn = ({
                         </Typography>
                         {count > 0 ? <Badge badgeContent={count} color="primary" /> : <Badge badgeContent={'O'} color="primary" />}
                     </Stack>
-                    <IconButton sx={{ mt: -1 }}>
-                        <AddCircleOutlineOutlinedIcon />
-                    </IconButton>
                 </Stack>
                 {/**la description */}
                 <Typography mt={2} >

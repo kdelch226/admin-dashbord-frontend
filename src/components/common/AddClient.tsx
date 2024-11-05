@@ -4,30 +4,21 @@ import { CustumButton } from '..';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTable, useUpdate } from '@refinedev/core';
 import { Stack } from '@mui/material';
-import MiniAgentCard from '../agent/MiniAgentCard';
+import MiniClientCard from '../client/miniClientCard';
 
 interface closeModal {
-    handleCloseAddagent: () => void,
-    projetId: string,
+    handleCloseAddClient: () => void,
+    type:string,
+    typeId: string,
 }
 
-const AddAgentProjet = ({ handleCloseAddagent, projetId }: closeModal) => {
-    console.log(projetId)
+const AddClient = ({ handleCloseAddClient, typeId,type}: closeModal) => {
     const {
         tableQueryResult: { data, isLoading, isError },
         filters,
         setFilters,
     } = useTable({
-        resource: 'agents',
-        filters: {
-            permanent: [
-              {
-                field: "projet",
-                operator: "ne",
-                value: projetId,
-              },
-            ],
-          },
+        resource: 'clients'
     });
 
     const { mutate } = useUpdate()
@@ -39,21 +30,21 @@ const AddAgentProjet = ({ handleCloseAddagent, projetId }: closeModal) => {
 
         return {
             name: logicalFilters.find((item) => item.field === "name")?.value || "",
-            post: logicalFilters.find((item) => item.field === "post")?.value || "",
+            company: logicalFilters.find((item) => item.field === "company")?.value || "",
         }
     }, [filters]);
 
-    const searchedagents = data?.data ?? [];
+    const searchedClients = data?.data ?? [];
 
-    const handleAddagent = ({ agent }: any) => {
-        const text = `do you want to add ${agent?.name}`;
+    const handleAddClient = ({ client }: any) => {
+        const text = `do you want to add ${client?.name}`;
         const response = confirm(text);
         if (response) {
             mutate({
-                resource: 'projets',
-                id: projetId,
+                resource:type,
+                id: typeId,
                 values: {
-                    employeId: agent._id,
+                    clientId: client._id,
                 }
             })
         }
@@ -80,9 +71,9 @@ const AddAgentProjet = ({ handleCloseAddagent, projetId }: closeModal) => {
             >
                 <Stack gap={2} direction={{ xs: 'column', sm: 'row' }}>
                     <Box>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>agent Name</FormHelperText>
+                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Client Name</FormHelperText>
                         <TextField
-                            placeholder='agent *'
+                            placeholder='Client *'
                             fullWidth
                             required
                             id='name'
@@ -99,17 +90,17 @@ const AddAgentProjet = ({ handleCloseAddagent, projetId }: closeModal) => {
                         />
                     </Box>
                     <Box>
-                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>post</FormHelperText>
+                        <FormHelperText sx={{ fontSize: 16, m: 1, fontWeight: 500, color: 'black' }}>Company Name</FormHelperText>
                         <TextField
                             fullWidth
                             variant='outlined'
                             color='info'
-                            placeholder='post'
+                            placeholder='company'
                             required
-                            value={currentFilterValues.post}
+                            value={currentFilterValues.company}
                             onChange={(e) => setFilters([
                                 {
-                                    field: 'post',
+                                    field: 'company',
                                     operator: 'contains',
                                     value: e.currentTarget.value ? e.currentTarget.value : undefined
                                 }
@@ -118,21 +109,20 @@ const AddAgentProjet = ({ handleCloseAddagent, projetId }: closeModal) => {
                     </Box>
                 </Stack>
 
-                {searchedagents?.map((agent) => (
-                    <MiniAgentCard
-                        id={agent._id}
-                        name={agent.name}
-                        post={agent.post}
-                        task={agent.task}
-                        gender={agent.gender}
-                        handleClick={() => handleAddagent({ agent })}
+                {searchedClients?.map((client) => (
+                    <MiniClientCard
+                        id={client._id}
+                        name={client.name}
+                        company={client.company}
+                        gender={client.gender}
+                        handleClick={()=>handleAddClient({client})}
                     />
                 ))}
 
             </Box>
             <CustumButton
                 title='Cancel'
-                handleClick={handleCloseAddagent}
+                handleClick={handleCloseAddClient}
                 icon={<CloseIcon />}
                 backgroundColor='#ebdec2'
                 color='#000'
@@ -141,4 +131,4 @@ const AddAgentProjet = ({ handleCloseAddagent, projetId }: closeModal) => {
     )
 }
 
-export default AddAgentProjet
+export default AddClient

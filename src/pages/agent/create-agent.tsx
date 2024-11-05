@@ -9,7 +9,6 @@ const CreateAgent = () => {
     register, 
     handleSubmit,
     formState: { isSubmitting },
-    control
   } = useForm();
 
   const onFinishHandler = async (data: FieldValues) => {
@@ -26,7 +25,6 @@ const CreateAgent = () => {
     formLoading={isSubmitting}
     handleSubmit={handleSubmit}
     onFinishHandler={onFinishHandler}
-    control={control}
     />
   )
 }

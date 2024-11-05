@@ -1,4 +1,4 @@
-import { Box, MenuItem, Stack, FormControl, Typography, Select, InputLabel, TextField } from '@mui/material';
+import { Box, MenuItem, Stack, FormControl, Typography, Select, InputLabel, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TextField } from '@mui/material';
 import React, { useMemo } from 'react';
 import { CustumButton } from '../../components';
 import { useNavigate } from 'react-router-dom';
@@ -172,70 +172,89 @@ const AllClient = () => {
           icon={<AddCircleOutlineOutlinedIcon />} />
       </Stack>
 
-      {allClients.map(client => (
-        <ClientCard
-          id={client._id}
-          name={client.name}
-          gender={client.gender}
-          company={client.company}
-          industry={client.industry}
-          dateCreation={client.dateCreation}
-          phoneNumber={client.phoneNumber}
-          address={client.address}
-          email={client.email}
-          noOfProject={4}
-          noOfEvent={2}
-        />
-      ))}
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+            <TableCell></TableCell>
+              <TableCell>customer</TableCell>
+              <TableCell>company</TableCell>
+              <TableCell sx={{display:{xs:'none',sm:'table-cell'}}}>industry</TableCell>
+              <TableCell>phoneNumber</TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }} >actions</TableCell>
+              </TableRow>
+          </TableHead>
+          <TableBody>
+            {allClients.map(client => (
+              <ClientCard
+                id={client._id}
+                name={client.name}
+                gender={client.gender}
+                company={client.company}
+                industry={client.industry}
+                phoneNumber={client.phoneNumber}
+                email={client.email}
+                noOfProject={4}
+                noOfEvent={2}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+
 
       {allClients.length > 0 && (
+        <Stack
+        flexDirection='row'
+        alignItems='center'
+        mt={3}
+        gap={2}
+        flexWrap='wrap'
+      >
+        <CustumButton
+          title=''
+          icon={<SkipPreviousIcon />}
+          handleClick={() => setCurrent((prev) => prev - 1)}
+          backgroundColor='#ebdec2'
+          color='#000'
+          disabled={!(current > 1)}
+        />
+
         <Box
-          display='flex'
-          mt={3}
-          gap={2}
-          flexWrap='wrap'
-        >
-          <CustumButton
-            title=''
-            icon={<SkipPreviousIcon />}
-            handleClick={() => setCurrent((prev) => prev - 1)}
-            backgroundColor='#ebdec2'
-            color='#000'
-            disabled={!(current > 1)}
-          />
-
-          <Box
-            display={{ xs: 'hidden', sm: 'flex' }}
-            alignItems='center' gap={1}>
-            Page{' '}<strong>{current}</strong> of <strong>{pageCount}</strong>
-          </Box>
-
-          <CustumButton
-            title=''
-            icon={<SkipNextIcon />}
-            handleClick={() => setCurrent((prev) => prev + 1)}
-            backgroundColor='#ebdec2'
-            color='#000'
-            disabled={(current <= pageCount)}
-          />
-
-          <Select variant='outlined'
-            required
-            color='info'
-            disabled={pageCount < 10}
-            inputProps={{ "aria-label": "Without label" }}
-            defaultValue={10}
-            onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
-          >
-            {pages.map((pagenumber) => (
-              <MenuItem
-                key={pagenumber}
-                value={pagenumber}>
-                show {pagenumber}
-              </MenuItem>
-            ))}
-          </Select>
+          display={{ xs: 'hidden', sm: 'flex' }}
+          alignItems='center' gap={1}>
+          Page{' '}<strong>{current}</strong> of <strong>{pageCount}</strong>
         </Box>
+
+        <CustumButton
+          title=''
+          icon={<SkipNextIcon />}
+          handleClick={() => setCurrent((prev) => prev + 1)}
+          backgroundColor='#ebdec2'
+          color='#000'
+          disabled={(current <= pageCount)}
+        />
+
+        <Select
+          sx={{height:30}}
+          variant='outlined'
+          required
+          color='info'
+          disabled={pageCount < 10}
+          inputProps={{ "aria-label": "Without label" }}
+          defaultValue={10}
+          onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
+        >
+          {pages.map((pagenumber) => (
+            <MenuItem
+              key={pagenumber}
+              value={pagenumber}>
+              show {pagenumber}
+            </MenuItem>
+          ))}
+        </Select>
+      </Stack>
       )}
     </Box>
   )

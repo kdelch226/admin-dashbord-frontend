@@ -13,7 +13,7 @@ import { Avatar } from "@mui/material";
 import { blue, pink } from "@mui/material/colors";
 
 
-const AgentProfil = ({ id, name, email,post, projet,gender, task, event, number, adress }: AgentProfileProps) => {
+const AgentProfil = ({ id, name, email,post, project,gender, task, event, number, adress }: AgentProfileProps) => {
 
     const navigate = useNavigate();
     const avatarNameTab = name.split(' ');

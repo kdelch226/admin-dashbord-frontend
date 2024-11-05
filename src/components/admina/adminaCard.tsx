@@ -22,7 +22,7 @@ const InfoBar = ({ icon, name }: InfoBarProps) => (
     </Typography>
   </Stack>
 );
-const AdminaCard = ({ id, name, email, number, avatar,adress, noOfServices }: AgentCardProp) => {
+const AdminaCard = ({ id, name, email, number, avatar,adress }: AgentCardProp) => {
 
   const { data: currentUser } = useGetIdentity<IIdentity>()
 

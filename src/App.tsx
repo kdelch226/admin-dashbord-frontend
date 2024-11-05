@@ -41,7 +41,7 @@ import {
   CreateProject,
   DetailProject,
   EditProject
-} from "./pages/projets/";
+} from "./pages/projects";
 
 import {
   EditClient,
@@ -56,9 +56,7 @@ import {
   CreateAgent,
   AllAgent,
 } from "./pages/agent";
-
-
-
+import { registerLicense } from '@syncfusion/ej2-base';
 import { Login } from "./pages/login";
 import { parseJwt } from "./utils/parse-jwt";
 import HomeIcon from '@mui/icons-material/Home';
@@ -71,10 +69,12 @@ import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import Logo from './assets/baobab.png'
+import EventIcon from '@mui/icons-material/Event';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import { Home } from "./pages";
-import { Stack } from "react-bootstrap";
 import { useState } from "react";
 import Admina from "./pages/admina/admina";
 import MyProfil from "./pages/profil/MyProfil";
@@ -83,6 +83,21 @@ import EditProfil from "./pages/profil/EditProfil";
 import AllTasks from "./pages/task/AllTasks";
 import CreateTask from "./pages/task/CreateTask";
 import EditTask from "./pages/task/Edit-Task";
+import DetailTask from "./pages/task/Detail-Task";
+import Calendar from "./pages/event/Calendar";
+import DetailEvent from "./pages/event/detail-event";
+import AdsClickIcon from '@mui/icons-material/AdsClick';
+import Activities from "./pages/activities/Activities";
+import ActivitiesDetails from "./pages/activities/activitiesDetails";
+import JournalLog from "./pages/journalLog/JournalLog";
+import JournaLogDetails from "./pages/journalLog/journalLogDetails";
+import AllTransaction from "./pages/transactions/AllTransaction";
+import CreateTransaction from "./pages/transactions/CreateTransaction";
+import AllObjective from "./pages/objective/AllObjective";
+import CreateObjective from "./pages/objective/CreateObjective";
+import EditObjective from "./pages/objective/EditObjective";
+import CreateAdmina from "./pages/admina/CreateAdmina";
+
 
 const axiosInstance = axios.create();
 
@@ -117,6 +132,8 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 )
+registerLicense('ORg4AjUWIQA/Gnt2UlhhQlVMfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5adEBjW3tZdH1VQ2hf');
+
 function App() {
   const authProvider: AuthBindings = {
     login: async ({ credential }: CredentialResponse) => {
@@ -133,7 +150,6 @@ function App() {
         })
 
         const data = await response.json()
-        console.log('response ', credential)
         if (response.status === 200) {
           localStorage.setItem(
             "user",
@@ -274,14 +290,25 @@ function App() {
                   }
                 },
                 {
-                  name: "projets",
-                  list: "/projets",
-                  create: "/projets/create",
-                  edit: "/projets/edit/:id",
-                  show: "/projets/show/:id",
+                  name: "projects",
+                  list: "/projects",
+                  create: "/projects/create",
+                  edit: "/projects/edit/:id",
+                  show: "/projects/show/:id",
                   meta: {
                     icon: <FolderCopyIcon />,
-                    label: "Projets"
+                    label: "Projects"
+                  }
+                },
+                {
+                  name: "transactions",
+                  list: "/transactions",
+                  create: "/transactions/create",
+                  edit: "/transactions/edit/:id",
+                  show: "/transactions/show/:id",
+                  meta: {
+                    icon: <MonetizationOnIcon />,
+                    label: "Transactions"
                   }
                 },
                 {
@@ -292,6 +319,44 @@ function App() {
                   meta: {
                     icon: <AssignmentIcon />,
                     label: "Tasks"
+                  }
+                },
+                {
+                  name: "events",
+                  list: "/events",
+                  create: "/events/create",
+                  edit: "/events/edit/:id",
+                  meta: {
+                    icon: <EventIcon />,
+                    label: "Events"
+                  }
+                },
+                {
+                  name: "objectives",
+                  list: "/objectives",
+                  create: "/objectives/create",
+                  edit: "/objectives/edit/:id",
+                  meta: {
+                    icon: <AdsClickIcon />,
+                    label: "Objectives"
+                  }
+                },
+                {
+                  name: "activities",
+                  list: "/activities",
+                  show: "/activities/show/:id",
+                  meta: {
+                    icon: <EditNoteIcon />,
+                    label: "Activities"
+                  }
+                },
+                {
+                  name: "journalLogs",
+                  list: "/journalLogs",
+                  show: "/journalLogs/show/:id",
+                  meta: {
+                    icon: <ConnectWithoutContactIcon />,
+                    label: "journalLogs"
                   }
                 },
                 {
@@ -347,7 +412,9 @@ function App() {
                           />
                         )}
                       >
-                        <Outlet />
+                        <Box >
+                          <Outlet />
+                        </Box>
                       </ThemedLayoutV2>
                     </Authenticated>
                   }
@@ -373,20 +440,45 @@ function App() {
                     <Route path="edit/:id" element={<EditAgent />} />
                     <Route path="show/:id" element={<DetailAgent />} />
                   </Route>
-                  <Route path="/projets">
+                  <Route path="/projects">
                     <Route index element={<AllProject />} />
                     <Route path="create" element={<CreateProject />} />
                     <Route path="edit/:id" element={<EditProject />} />
                     <Route path="show/:id" element={<DetailProject />} />
                   </Route>
+                  <Route path="/transactions">
+                    <Route index element={<AllTransaction />} />
+                    <Route path="create/:type/:entity?/:entityName?/:entityID?" element={<CreateTransaction />} />
+                    <Route path="edit/:id" element={<EditProject />} />
+                    <Route path="show/:id" element={<DetailProject />} />
+                  </Route>
                   <Route path="/tasks">
                     <Route index element={<AllTasks />} />
-                    <Route path="create" element={<CreateTask />} />
+                    <Route path="create/:projectId?/:eventId?" element={<CreateTask />} />
+                    <Route path="show/:id" element={<DetailTask />} />
                     <Route path="edit/:id" element={<EditTask />} />
+                  </Route>
+                  <Route path="/events">
+                    <Route index element={<Calendar />} />
+                    <Route path="show/:id" element={<DetailEvent />} />
+                  </Route>
+                  <Route path="/objectives">
+                    <Route index element={<AllObjective />} />
+                    <Route path="create" element={<CreateObjective />} />
+                    <Route path="edit/:id" element={<EditObjective />} />
+                  </Route>
+                  <Route path="/activities">
+                    <Route index element={<Activities />} />
+                    <Route path="show/:id" element={<ActivitiesDetails />} />
+                  </Route>
+                  <Route path="/journalLogs">
+                    <Route index element={<JournalLog />} />
+                    <Route path="show/:id" element={<JournaLogDetails />} />
                   </Route>
                   <Route path="/users">
                     <Route index element={<Admina />} />
                     <Route path="show/:id" element={<AdminaDetail />} />
+                    <Route path="create" element={<CreateAdmina />} />
                   </Route>
                   {/* <Route path="/messages">
                     <Route index element={<Messages />} />

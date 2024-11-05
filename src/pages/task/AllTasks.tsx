@@ -6,37 +6,15 @@ import { Box } from '@mui/material';
 import { DragEndEvent } from '@dnd-kit/core';
 import { Outlet } from 'react-router-dom';
 
-const AllTasks = ({children}:React.PropsWithChildren) => {
+const AllTasks = ({ children }: React.PropsWithChildren) => {
   const { data, isLoading: isLoadingTasks, isError } = useList<TasksProp>({
     resource: "tasks",
   });
-
   const { mutate: updateTask } = useUpdate();
 
-  const Stages = ['unassigned', 'todo', 'pending', 'in-progress', 'completed', 'cancelled'] as const;
-  type Stage = typeof Stages[number];
-  const tasks = data?.data;
+  const tasks = data?.data ||[];
 
-  // Fonction pour grouper les tâches par statut
-  const groupTasksByStage = (tasks: TasksProp[] = []): TaskGroup => {
-    // Initialisation de l'objet TaskGroup avec des tableaux vides pour chaque étape
-    const taskGroup: TaskGroup = {};
-    Stages.forEach((stage) => {
-      taskGroup[stage] = [];
-    });
-
-    // Grouper les tâches en fonction de leur statut
-    tasks.forEach((task: TasksProp) => {
-      if (taskGroup[task.status]) {
-        taskGroup[task.status].push(task);
-      }
-    });
-
-    return taskGroup;
-  };
-
-  // Assurez-vous que les tâches existent avant de les grouper
-  const taskGroups = tasks ? groupTasksByStage(tasks) : {};
+  console.log(tasks)
 
   const handleOnDragEnd = (event: DragEndEvent) => {
     let stage = event.over?.id as undefined | string;
@@ -47,15 +25,15 @@ const AllTasks = ({children}:React.PropsWithChildren) => {
     console.log('taskStage ', taskStage, 'stage ')
 
     updateTask({
-      resource: 'tasks',
-      id: taskId,
-      values: {
-        status: stage
-      },
-      mutationMode: 'optimistic'
+        resource: 'tasks',
+        id: taskId,
+        values: {
+            status: stage
+        },
+        mutationMode: 'optimistic'
     })
 
-  }
+}
 
   return (
     <div>
@@ -65,8 +43,8 @@ const AllTasks = ({children}:React.PropsWithChildren) => {
         <p>Failed to load tasks.</p>
       ) : (
         <Box mx={2}>
-          <TaskList taskGroups={taskGroups} handleOnDragEnd={handleOnDragEnd} />
-          <Outlet/>
+          <TaskList handleOnDragEnd={handleOnDragEnd} tasks={tasks} />
+          <Outlet />
         </Box>
       )}
     </div>

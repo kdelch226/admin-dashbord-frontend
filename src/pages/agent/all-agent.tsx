@@ -1,4 +1,4 @@
-import { Box, MenuItem, Stack, FormControl, Typography, Select, InputLabel, TextField } from '@mui/material';
+import { Box, MenuItem, Stack, FormControl, Typography, Select, InputLabel, TextField, TableCell, TableBody, TableRow, TableHead, Table, TableContainer } from '@mui/material';
 import React, { useMemo } from 'react';
 import { AgentCard, CustumButton } from '../../components';
 import { useNavigate } from 'react-router-dom';
@@ -63,7 +63,7 @@ const AllAgent = () => {
 
       <Box gap={3} mt={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <Stack direction='column' width='100%'>
-          <Typography fontWeight={600} fontSize={22}>{!allEmployes.length ? 'No agents' : 'Our agentss'}</Typography>
+          <Typography fontWeight={600} fontSize={22}>{!allEmployes.length ? 'No agents' : 'Our agents'}</Typography>
           <Box my={3} display='flex' flexWrap='wrap' width='85%' justifyContent='space-between'>
             <Box mb={{ xs: 1, sm: 0 }} gap={2} display='flex' flexWrap='wrap'>
 
@@ -141,7 +141,7 @@ const AllAgent = () => {
                     value={currentFilterValues.etat}
                     onChange={(e) => setFilters([
                       {
-                        field: 'etat',
+                        field: 'status',
                         operator: 'eq',
                         value: e.target.value
                       }
@@ -177,26 +177,42 @@ const AllAgent = () => {
           icon={<AddCircleOutlineOutlinedIcon />} />
       </Stack>
 
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>agents</TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }} >gender</TableCell>
+              <TableCell>post</TableCell>
+              <TableCell>status</TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }} >dateEmbauche</TableCell>
+              <TableCell>phoneNumber</TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }} >actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allEmployes.map(employe => (
+              <AgentCard
+                id={employe._id}
+                name={employe.name}
+                gender={employe.gender}
+                post={employe.post}
+                status={employe.status}
+                dateEmbauche={employe.dateEmbauche}
+                phoneNumber={employe.phoneNumber}
+                email={employe.email}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      {allEmployes.map(employe => (
-        <AgentCard
-          id={employe._id}
-          name={employe.name}
-          gender={employe.gender}
-          post={employe.post}
-          etat={employe.etat}
-          dateEmbauche={employe.dateEmbauche}
-          phoneNumber={employe.phoneNumber}
-          address={employe.address}
-          email={employe.email}
-          noOfProject={4}
-          noOfEvent={2}
-        />
-      ))}
 
       {allEmployes.length > 0 && (
-        <Box
-          display='flex'
+        <Stack
+          flexDirection='row'
+          alignItems='center'
           mt={3}
           gap={2}
           flexWrap='wrap'
@@ -225,7 +241,9 @@ const AllAgent = () => {
             disabled={(current <= pageCount)}
           />
 
-          <Select variant='outlined'
+          <Select
+            sx={{ height: 30 }}
+            variant='outlined'
             required
             color='info'
             disabled={pageCount < 10}
@@ -241,7 +259,7 @@ const AllAgent = () => {
               </MenuItem>
             ))}
           </Select>
-        </Box>
+        </Stack>
       )}
 
     </Box>

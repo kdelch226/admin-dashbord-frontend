@@ -1,7 +1,7 @@
 import { BaseKey } from '@pankod/refine-core';
 
 
-export interface ProjetSimpleCardProp {
+export interface projectSimpleCardProp {
     id?: BaseKey | undefined,
     title:string,
     startDate:string,
@@ -9,11 +9,11 @@ export interface ProjetSimpleCardProp {
     ajustedBudget:string,
     estimatedEndDate:string,
     endDate:string,
-    etat:string,
+    status:string,
     client:string,
 }
 
-export interface ProjetDetailProp {
+export interface projectDetailProp {
     id?: BaseKey | undefined,
     title:string,
     description:string,
@@ -23,7 +23,7 @@ export interface ProjetDetailProp {
     actualExpenses:string,
     estimatedEndDate:string,
     endDate:string,
-    etat:string,
+    status:string,
     tasks:string,
     assignedEmployees:string,
     client:string,
@@ -36,7 +36,7 @@ export interface InfoBarProps {
     name: string
 }
 
-export interface ProjetFormProps {
+export interface projectFormProps {
     type: string,
     register: any,
     onFinish: (values: FieldValues) => Promise<void | CreateResponse<BaseRecord> | UpdateResponse<BaseRecord>>,

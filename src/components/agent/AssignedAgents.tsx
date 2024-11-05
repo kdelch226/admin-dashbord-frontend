@@ -5,25 +5,23 @@ import CustumButton from '../common/CustumButton';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MiniAgentCard from './MiniAgentCard';
-import AddAgentProjet from '../projet/AddAgentProjet';
+import AddAgent from '../common/AddAgent';
 
 
 interface AssignedAgentsProps {
     agents: any[]; // clients est un tableau de MiniAgentCard
+    type:string;
+    handleDelete: () => void
 }
 
 
-const AssignedAgents = ({ agents }: any) => {
+const AssignedAgents = ({ agents,type,handleDelete }: any) => {
 
     const [filteredAgents, setFilteredAgents] = useState(agents);
     const { id } = useParams();
-    console.log(id)
-
-    useEffect(() => { }, [])
-
-    console.log('chat', filteredAgents);
+    const navigate=useNavigate()
 
     const handleFilterAgentsName = (name: string) => {
         const normalizedSearchName = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -80,7 +78,7 @@ const AssignedAgents = ({ agents }: any) => {
                             title='name'
                             icon={<ArrowCircleDownIcon />}
                             variant='contained'
-                            handleClick={() => handleOrder('asc')}
+                            handleClick={() => handleOrder('desc')}
                             backgroundColor='#ebdec2'
                             color='#000'
                         />
@@ -125,9 +123,10 @@ const AssignedAgents = ({ agents }: any) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <AddAgentProjet
+                    <AddAgent
                         handleCloseAddagent={handlCloseAddAgent}
-                        projetId={id as string}
+                        typeId={id as string}
+                        type={type}
                     />
                 </Modal>
             </Box>
@@ -137,9 +136,9 @@ const AssignedAgents = ({ agents }: any) => {
                         id={agent._id}
                         name={agent.name}
                         post={agent.post}
-                        task={agent.task}
                         gender={agent.gender}
-                        handleClick={() => console.log('ha')}
+                        handleClick={() => navigate(`/agents/show/${agent._id}`)}
+                        handleDelete={()=>{handleDelete(agent._id)}}
                     />
                 ))}
             </Box>

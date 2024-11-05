@@ -12,8 +12,10 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { AdminaCard, CustumButton } from '../../components';
+import { useNavigate } from 'react-router-dom';
 
 const Admina = () => {
+  const navigate = useNavigate();
 
   const {
     tableQueryResult: { data, isLoading, isError },
@@ -57,12 +59,12 @@ const Admina = () => {
   if (isLoading) return <Typography>loading...</Typography>
 
   return (
-    <Box>
+    <Box mt={2}>
       <Typography fontSize={22} fontWeight={600} color="#11142d">
         Administrators List
       </Typography>
 
-      <Box mb={{ xs: 1, sm: 0 }} gap={2} display='flex' flexWrap='wrap'>
+      <Box mt={2} mb={2} gap={2} display='flex' flexWrap='wrap'>
 
         <Stack direction='row' gap={3}>
           <Box>
@@ -104,8 +106,15 @@ const Admina = () => {
             ])}
           />
         </Stack>
-
       </Box>
+
+      <CustumButton
+        title='Create Admin'
+        handleClick={() => navigate('/users/create')}
+        backgroundColor='#ebdec2'
+        color='#000'
+        icon={<AddCircleOutlineOutlinedIcon />} />
+
       <Box
         mt="20px"
         sx={{
@@ -126,16 +135,17 @@ const Admina = () => {
             number={admin.number}
             adress={admin.adress}
             avatar={admin.avatar}
-            noOfServices={admin.allService.length}
           />
         ))}
 
         {alladmins.length > 0 && (
-          <Box
-            display='flex'
+          <Stack
+            flexDirection='row'
+            alignItems='center'
             mt={3}
             gap={2}
             flexWrap='wrap'
+            p={2}
           >
             <CustumButton
               title=''
@@ -161,7 +171,9 @@ const Admina = () => {
               disabled={(current <= pageCount)}
             />
 
-            <Select variant='outlined'
+            <Select
+              sx={{ height: 30 }}
+              variant='outlined'
               required
               color='info'
               disabled={pageCount < 10}
@@ -177,7 +189,7 @@ const Admina = () => {
                 </MenuItem>
               ))}
             </Select>
-          </Box>
+          </Stack>
         )}
       </Box>
     </Box>

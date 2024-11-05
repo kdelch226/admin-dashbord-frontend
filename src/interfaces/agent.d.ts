@@ -7,7 +7,6 @@ export interface AgentCardProp {
     number: string,
     adress: string,
     avatar: string,
-    noOfServices: number
 }
 
 export interface AgentSimpleCardProp {
@@ -15,13 +14,10 @@ export interface AgentSimpleCardProp {
     name: string,
     email: string,
     phoneNumber: string,
-    address: string,
     gender:string,
-    noOfProject: number,
-    noOfEvent:number,
     dateEmbauche:string,
     post:string,
-    etat:string,
+    status:string,
 
 }
 
@@ -32,12 +28,17 @@ export interface AgentProfileProps {
     number: string,
     gender:string,
     post:string,
-    projet:Array | undefined,
+    project:Array | undefined,
     task:Array | undefined,
     event:Array | undefined,
     adress: string,
     email: string,
     number:string,
+}
+
+export interface agentNameId{
+    _id:string,
+    name: string,
 }
 
 export interface InfoBarProps {
@@ -48,10 +49,10 @@ export interface InfoBarProps {
 export interface MiniAgentCardProp{
     id?: BaseKey | undefined,
     name: string,
-    post: string,
-    task:Array | undefined,
+    post?: string,
     gender: string,
-    handleClick: (agent:any) => void
+    handleDelete?:(id:string)=>void,
+    handleClick?: (agent:any) => void
 }
 
 export interface AgentFormProps {
@@ -61,5 +62,4 @@ export interface AgentFormProps {
     formLoading: boolean,
     handleSubmit: FormEventHandler<HTMLFormElement> | undefined,
     onFinishHandler: (data: FieldValues) => Promise<void> | void,
-    control:any
 }

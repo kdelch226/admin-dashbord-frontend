@@ -15,11 +15,9 @@ export interface ClientSimpleCardProp {
     name: string,
     email: string,
     phoneNumber: string,
-    address: string,
     gender: string,
     noOfProject: number,
     noOfEvent: number,
-    dateCreation: string,
     industry: string,
     company: string,
 
@@ -30,7 +28,8 @@ export interface MiniClientSimpleCardProp {
     name: string,
     company: string,
     gender: string,
-    handleClick: (client:any) => void
+    handleClick: (client:any) => void,
+    handleDelete?:(id:string)=>void,
 }
 
 
@@ -40,7 +39,7 @@ export interface ClientProfileProps {
     number: string,
     gender: string,
     company: string,
-    projet: Array | undefined,
+    project: Array | undefined,
     event: Array | undefined,
     adress: string,
     email: string,

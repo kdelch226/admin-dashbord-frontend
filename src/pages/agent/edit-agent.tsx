@@ -22,13 +22,12 @@ const EditAgent = () => {
   };
   return (
     <AgentForm
-      type="Create"
+      type="Edit"
       register={register}
       onFinish={onFinish}
       formLoading={isSubmitting}
       handleSubmit={handleSubmit}
       onFinishHandler={onFinishHandler}
-      control={control}
     />
   )
 }

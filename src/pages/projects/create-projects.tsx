@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from '@refinedev/react-hook-form';
 import { FieldValues } from 'react-hook-form';
-import ProjetForm from '../../components/projet/ProjetForm';
+import ProjectForm from '../../components/project/ProjectForm';
 import { useGetIdentity } from '@refinedev/core';
 type IIdentity = {
   id: number;
@@ -10,7 +10,7 @@ type IIdentity = {
 };
 
 
-const CreateClient = () => {
+const CreateProject = () => {
   const { data: user } = useGetIdentity<IIdentity>();
 
   const {
@@ -29,16 +29,15 @@ const CreateClient = () => {
     });
   };
   return (
-    <ProjetForm
+    <ProjectForm
       type="Create"
       register={register}
       onFinish={onFinish}
       formLoading={isSubmitting}
       handleSubmit={handleSubmit}
       onFinishHandler={onFinishHandler}
-      control={control}
     />
   )
 }
 
-export default CreateClient
+export default CreateProject

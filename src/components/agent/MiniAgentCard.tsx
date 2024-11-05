@@ -1,53 +1,52 @@
-import { Avatar, Box, Card, Stack, Typography } from '@mui/material';
-import React from 'react';
+import { Avatar, Button, TableCell, TableRow, Typography } from '@mui/material';
+import { blue, grey, pink } from '@mui/material/colors';
 import { Link } from 'react-router-dom';
-import { blue, pink, green, teal } from '@mui/material/colors';
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import EmailIcon from '@mui/icons-material/Email';
-import PersonIcon from '@mui/icons-material/Person';
-import ApartmentIcon from '@mui/icons-material/Apartment';
-import { MiniClientSimpleCardProp } from '../../interfaces/client';
 import { MiniAgentCardProp } from '../../interfaces/agent';
-import { useNavigate } from 'react-router-dom';
+import { Delete } from '@mui/icons-material';
 
-const MiniAgentCard = ({ id, name, post, task, gender, handleClick }: MiniAgentCardProp) => {
+const MiniAgentCard = ({ id, name, post, gender, handleDelete, handleClick }: MiniAgentCardProp) => {
     const avatarNameTab = name.split(' ');
     const avatarName = avatarNameTab[0].slice(0, 1) + avatarNameTab[1]?.slice(0, 1) || '';
     const avatarColor = gender === 'M' ? blue[500] : pink[500];
 
     return (
-        <Card
-            sx={{
-                display: 'flex',
-                alignItems: 'start',
-                my: 1,
-                p: 1,
-                '&:hover': {
-                    boxShadow: 10,
-                },
-                cursor: 'pointer',
-                gap: 2,
-                textDecoration: 'none',
-                border: '1px solid black'
-            }}
+        <TableRow
+            key={id}
             onClick={handleClick}
+            sx={{
+                width: '100%',
+                backgroundColor: 'white',
+                '&:hover': {
+                    backgroundColor: grey[300],
+                    cursor: 'pointer',
+                },
+            }}
         >
-            <Avatar sx={{ bgcolor: avatarColor }}>
-                {avatarName}
-            </Avatar>
+            <TableCell>
+                <Avatar sx={{ bgcolor: avatarColor }}>
+                    {avatarName}
+                </Avatar>
+            </TableCell>
+            <TableCell>
+                <Typography variant='subtitle2' sx={{ fontSize: 18 }}>{name}</Typography>
+                {post && (
+                    <Typography variant='body2' sx={{ textDecoration: 'underline', fontSize: 15 }}>{post}</Typography>
+                )}
+            </TableCell>
 
-            <Stack>
-                <Typography paragraph variant='subtitle2' sx={{ fontSize: 18 }}>{name} </Typography>
-                <Typography paragraph variant='body2' sx={{ textDecoration: 'underline', fontSize: 15, mb: 1 }}>{post}</Typography>
-            </Stack>
+            {handleDelete && (
+                <TableCell align="right">
+                    <Button onClick={(event) => {
+                        event.stopPropagation(); // Empêche le clic de se propager
+                        handleDelete(id);
+                    }}>
+                        <Delete />
+                    </Button>
+                </TableCell>
+            )}
 
-            <Box>
-                <Typography paragraph variant='body1' sx={{ fontSize: 17 }}>Task : {task.length} </Typography>
-            </Box>
-
-        </Card>
-    )
+        </TableRow>
+    );
 }
 
 export default MiniAgentCard;

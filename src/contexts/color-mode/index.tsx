@@ -65,7 +65,7 @@ const overriddenLightTheme = createTheme({
     >
       <ThemeProvider
         // you can change the theme colors here. example: mode === "light" ? RefineThemes.Magenta : RefineThemes.MagentaDark
-        theme={mode === "light" ? overriddenLightTheme : RefineThemes.BlueDark}
+        theme={mode === "light" ? overriddenLightTheme : overriddenLightTheme}
       >
         {children}
       </ThemeProvider>

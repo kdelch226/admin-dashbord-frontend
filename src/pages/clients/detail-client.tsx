@@ -21,7 +21,7 @@ const DetailClient = () => {
           email={clientData.email}
           company={clientData.company}
           industry={clientData.industry}
-          projet={[]}
+          project={[]}
           event={[]}
           gender={clientData.gender}
           adress={clientData.address}

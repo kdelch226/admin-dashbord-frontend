@@ -1,4 +1,4 @@
-import { Box, MenuItem, Stack, FormControl, Typography, Select, InputLabel, TextField } from '@mui/material';
+import { Box, MenuItem, Stack, FormControl, Typography, Select, InputLabel, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TextField } from '@mui/material';
 import React, { useMemo } from 'react';
 import { CustumButton } from '../../components';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +8,9 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { useTable } from '@refinedev/core';
-import ProjetCard from '../../components/projet/ProjetCard';
-function AllProject() {
+import ObjectiveCard from '../../components/objective/ObjectiveCard';
+
+const AllObjective = () => {
   const navigate = useNavigate();
   const {
     tableQueryResult: { data, isLoading, isError },
@@ -30,10 +31,11 @@ function AllProject() {
 
     return {
       title: logicalFilters.find((item) => item.field === "title")?.value || "",
-      post: logicalFilters.find((item) => item.field === "expertise")?.value || "",
+      company: logicalFilters.find((item) => item.field === "company")?.value || "",
     }
   }, [filters]);
-  const allProjets = data?.data ?? [];
+
+  const allObjectives = data?.data ?? [];
 
   const currentTitle = sorters.find((item) => item.field === 'title')?.order;
 
@@ -61,7 +63,7 @@ function AllProject() {
 
       <Box gap={3} mt={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <Stack direction='column' width='100%'>
-          <Typography fontWeight={600} fontSize={22}>{!allProjets.length ? 'No Projects' : 'Our Projects'}</Typography>
+          <Typography fontWeight={600} fontSize={22}>{!allObjectives.length ? 'No objective' : 'Our objectives'}</Typography>
           <Box my={3} display='flex' flexWrap='wrap' width='85%' justifyContent='space-between'>
             <Box mb={{ xs: 1, sm: 0 }} gap={2} display='flex' flexWrap='wrap'>
 
@@ -93,12 +95,27 @@ function AllProject() {
                   size='small'
                   variant='outlined'
                   color='info'
-                  placeholder='Search by title'
+                  placeholder='title'
                   required
                   value={currentFilterValues.title}
                   onChange={(e) => setFilters([
                     {
                       field: 'title',
+                      operator: 'contains',
+                      value: e.currentTarget.value ? e.currentTarget.value : undefined
+                    }
+                  ])}
+                />
+                <TextField
+                  size='small'
+                  variant='outlined'
+                  color='info'
+                  placeholder='company'
+                  required
+                  value={currentFilterValues.company}
+                  onChange={(e) => setFilters([
+                    {
+                      field: 'company',
                       operator: 'contains',
                       value: e.currentTarget.value ? e.currentTarget.value : undefined
                     }
@@ -148,78 +165,97 @@ function AllProject() {
         justifyContent='space-between'
       >
         <CustumButton
-          title='Create project'
-          handleClick={() => navigate('/projets/create')}
+          title='Create Objective'
+          handleClick={() => navigate('/objectives/create')}
           backgroundColor='#ebdec2'
           color='#000'
           icon={<AddCircleOutlineOutlinedIcon />} />
       </Stack>
 
-      {allProjets.map(projet => (
-        <ProjetCard
-        id={projet._id}
-          title={projet.title}
-          startDate={projet.startDate}
-          initialBudget={projet.initialBudget}
-          ajustedBudget={projet.ajustedBudget}
-          estimatedEndDate={projet.estimatedEndDate}
-          endDate={projet.endDate}
-          etat={projet.etat}
-          client={projet.client}
-        />
-      ))}
-
-      {allProjets.length > 0 && (
-        <Box
-          display='flex'
-          mt={3}
-          gap={2}
-          flexWrap='wrap'
-        >
-          <CustumButton
-            title=''
-            icon={<SkipPreviousIcon />}
-            handleClick={() => setCurrent((prev) => prev - 1)}
-            backgroundColor='#ebdec2'
-            color='#000'
-            disabled={!(current > 1)}
-          />
-
-          <Box
-            display={{ xs: 'hidden', sm: 'flex' }}
-            alignItems='center' gap={1}>
-            Page{' '}<strong>{current}</strong> of <strong>{pageCount}</strong>
-          </Box>
-
-          <CustumButton
-            title=''
-            icon={<SkipNextIcon />}
-            handleClick={() => setCurrent((prev) => prev + 1)}
-            backgroundColor='#ebdec2'
-            color='#000'
-            disabled={(current <= pageCount)}
-          />
-
-          <Select variant='outlined'
-            required
-            color='info'
-            disabled={pageCount < 10}
-            inputProps={{ "aria-label": "Without label" }}
-            defaultValue={10}
-            onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
-          >
-            {pages.map((pagenumber) => (
-              <MenuItem
-                key={pagenumber}
-                value={pagenumber}>
-                show {pagenumber}
-              </MenuItem>
+      <TableContainer>
+        <Table>
+          {/* <TableHead>
+            <TableRow>
+            <TableCell></TableCell>
+              <TableCell>customer</TableCell>
+              <TableCell>company</TableCell>
+              <TableCell sx={{display:{xs:'none',sm:'table-cell'}}}>industry</TableCell>
+              <TableCell>phoneNumber</TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }} >actions</TableCell>
+              </TableRow>
+          </TableHead> */}
+          <TableBody>
+            {allObjectives.map(objective => (
+              <ObjectiveCard
+              id={objective._id}
+              title={objective.title}
+              type={objective.type}
+              targetValue={objective.targetValue}
+              currentValue={objective.currentValue}
+              endDate={objective.endDate}
+              startDate={objective.startDate}
+              />
             ))}
-          </Select>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+
+
+      {allObjectives.length > 0 && (
+        <Stack
+        flexDirection='row'
+        alignItems='center'
+        mt={3}
+        gap={2}
+        flexWrap='wrap'
+      >
+        <CustumButton
+          title=''
+          icon={<SkipPreviousIcon />}
+          handleClick={() => setCurrent((prev) => prev - 1)}
+          backgroundColor='#ebdec2'
+          color='#000'
+          disabled={!(current > 1)}
+        />
+
+        <Box
+          display={{ xs: 'hidden', sm: 'flex' }}
+          alignItems='center' gap={1}>
+          Page{' '}<strong>{current}</strong> of <strong>{pageCount}</strong>
         </Box>
+
+        <CustumButton
+          title=''
+          icon={<SkipNextIcon />}
+          handleClick={() => setCurrent((prev) => prev + 1)}
+          backgroundColor='#ebdec2'
+          color='#000'
+          disabled={(current <= pageCount)}
+        />
+
+        <Select
+          sx={{height:30}}
+          variant='outlined'
+          required
+          color='info'
+          disabled={pageCount < 10}
+          inputProps={{ "aria-label": "Without label" }}
+          defaultValue={10}
+          onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
+        >
+          {pages.map((pagenumber) => (
+            <MenuItem
+              key={pagenumber}
+              value={pagenumber}>
+              show {pagenumber}
+            </MenuItem>
+          ))}
+        </Select>
+      </Stack>
       )}
     </Box>
   )
 }
 
-export default AllProject
+export default AllObjective
