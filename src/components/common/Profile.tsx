@@ -69,7 +69,7 @@ const Profile = ({ type, name, avatar, email, services, number, adress }: Profil
             >
               <img
                 src={
-                  avatar.length > 3
+                  avatar && avatar.length > 3
                     ? avatar
                     : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                 }

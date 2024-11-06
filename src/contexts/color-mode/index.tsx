@@ -52,7 +52,7 @@ const overriddenLightTheme = createTheme({
       main: "#2f82f1",
     },
     background: {
-      default: "#e5e5e5", 
+      default: "#EDEDED", 
     },
   },
 });

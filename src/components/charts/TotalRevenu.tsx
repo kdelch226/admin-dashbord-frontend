@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactApexChart from 'react-apexcharts';
 import { Box, Typography, Stack } from '@mui/material';
-import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { TotalRevenueOptions } from './chart.config';
 import { green, red } from '@mui/material/colors';
 
@@ -60,17 +58,7 @@ const TotalRevenu: React.FC<TotalRevenuProps> = ({ bgcolor, payment, expense }) 
           ${difference}
         </Typography>
 
-        <Stack flexDirection='row' gap={1}>
-          <ArrowCircleUpIcon sx={{ color: '#38b000', fontSize: 28 }} />
-          <Stack>
-            <Typography fontWeight={350} sx={{ color: '#38b000', fontSize: 15, fontWeight: 400 }}  >
-              1.2%
-            </Typography>
-            <Typography fontWeight={350} sx={{ color: '#38b000', fontSize: 15, fontWeight: 400 }} >
-              than last month
-            </Typography>
-          </Stack>
-        </Stack>
+        
       </Stack>
 
       <ReactApexChart

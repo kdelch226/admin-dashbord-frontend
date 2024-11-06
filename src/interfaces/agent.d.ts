@@ -57,6 +57,7 @@ export interface MiniAgentCardProp{
 
 export interface AgentFormProps {
     type: string,
+    errors?: FieldErrors<FieldValues>,
     register: any,
     onFinish: (values: FieldValues) => Promise<void | CreateResponse<BaseRecord> | UpdateResponse<BaseRecord>>,
     formLoading: boolean,

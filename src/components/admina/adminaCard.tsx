@@ -48,7 +48,7 @@ const AdminaCard = ({ id, name, email, number, avatar,adress }: AgentCardProp) =
     >
       <img
         src={
-          avatar.length > 0
+          avatar && avatar.length > 0
             ? avatar
             : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
         }
